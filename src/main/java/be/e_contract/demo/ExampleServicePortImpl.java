@@ -5,6 +5,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.xml.ws.BindingType;
 import javax.xml.ws.WebServiceProvider;
 import javax.xml.ws.soap.SOAPBinding;
+import org.apache.cxf.annotations.EndpointProperties;
+import org.apache.cxf.annotations.EndpointProperty;
+import org.apache.cxf.ws.security.SecurityConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,6 +16,9 @@ import org.slf4j.LoggerFactory;
         wsdlLocation = "example.wsdl", portName = "ExampleServicePort")
 @WebServlet("/example/*")
 @BindingType(SOAPBinding.SOAP12HTTP_BINDING)
+@EndpointProperties({
+    @EndpointProperty(key = SecurityConstants.SIGNATURE_PROPERTIES, value = "demo-ws-signature.properties"),
+    @EndpointProperty(key = SecurityConstants.SUBJECT_CERT_CONSTRAINTS, value = ".*")})
 public class ExampleServicePortImpl implements ExampleServicePortType {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExampleServicePortImpl.class);

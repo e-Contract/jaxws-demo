@@ -30,6 +30,7 @@ import org.bouncycastle.operator.DefaultSignatureAlgorithmIdentifierFinder;
 import org.bouncycastle.operator.bc.BcECContentSignerBuilder;
 import org.bouncycastle.operator.bc.BcRSAContentSignerBuilder;
 import org.joda.time.DateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,7 +63,8 @@ public class WebServiceTest {
         requestContext.put(SecurityConstants.CALLBACK_HANDLER,
                 new PasswordCallbackHandler());
 
-        port.echo("hello world");
+        String result = port.echo("hello world");
+        Assertions.assertEquals("hello world", result);
     }
 
     private KeyPair generateKeyPair() throws Exception {
