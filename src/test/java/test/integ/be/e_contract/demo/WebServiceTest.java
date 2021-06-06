@@ -67,6 +67,36 @@ public class WebServiceTest {
         Assertions.assertEquals("hello world", result);
     }
 
+    @Test
+    public void invokeWebServiceECDSA() throws Exception {
+        LOGGER.debug("test");
+
+        ExampleService service = new ExampleService();
+        ExampleServicePortType port = service.getExampleServicePort();
+
+        KeyPair keyPair = generateKeyPair("EC");
+        PrivateKey privateKey = keyPair.getPrivate();
+        PublicKey publicKey = keyPair.getPublic();
+        X509Certificate certificate = getCertificate(privateKey, publicKey);
+
+        BindingProvider bindingProvider = (BindingProvider) port;
+        Map<String, Object> requestContext = bindingProvider
+                .getRequestContext();
+        requestContext.put(
+                BindingProvider.ENDPOINT_ADDRESS_PROPERTY, "https://localhost/jaxws-demo/example");
+        requestContext.put(
+                SecurityConstants.SIGNATURE_CRYPTO,
+                new ClientCrypto(privateKey, Collections
+                        .singletonList(certificate)));
+        requestContext.put(SecurityConstants.ASYMMETRIC_SIGNATURE_ALGORITHM,
+				"http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256");
+        requestContext.put(SecurityConstants.CALLBACK_HANDLER,
+                new PasswordCallbackHandler());
+
+        String result = port.echo("hello world");
+        Assertions.assertEquals("hello world", result);
+    }
+
     private KeyPair generateKeyPair() throws Exception {
         return generateKeyPair("RSA");
     }
