@@ -1,5 +1,6 @@
 package test.integ.be.e_contract.demo;
 
+import be.e_contract.demo.ECDSAAlgorithmSuiteLoader;
 import be.e_contract.jaxws_demo.ExampleService;
 import be.e_contract.jaxws_demo.ExampleServicePortType;
 import java.io.ByteArrayInputStream;
@@ -16,7 +17,10 @@ import java.security.spec.RSAKeyGenParameterSpec;
 import java.util.Collections;
 import java.util.Map;
 import javax.xml.ws.BindingProvider;
+import org.apache.cxf.Bus;
+import org.apache.cxf.BusFactory;
 import org.apache.cxf.ws.security.SecurityConstants;
+import org.apache.cxf.ws.security.policy.custom.AlgorithmSuiteLoader;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x509.AlgorithmIdentifier;
 import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
@@ -42,6 +46,11 @@ public class WebServiceTest {
     @Test
     public void invokeWebService() throws Exception {
         LOGGER.debug("test");
+
+        Bus bus = BusFactory.getDefaultBus();
+        bus.setExtension(new ECDSAAlgorithmSuiteLoader(), AlgorithmSuiteLoader.class);
+        BusFactory.setDefaultBus(bus);
+        BusFactory.setThreadDefaultBus(bus);
 
         ExampleService service = new ExampleService();
         ExampleServicePortType port = service.getExampleServicePort();

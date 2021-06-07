@@ -33,6 +33,7 @@ public class ECDSAAlgorithmSuiteLoader extends DefaultAlgorithmSuiteLoader {
         LOGGER.debug("constructor");
     }
 
+    @Override
     public AlgorithmSuite getAlgorithmSuite(Bus bus, SPConstants.SPVersion version, Policy nestedPolicy) {
         LOGGER.debug("getAlgorithmSuite");
         AssertionBuilderRegistry reg = bus.getExtension(AssertionBuilderRegistry.class);

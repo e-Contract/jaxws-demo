@@ -13,6 +13,9 @@
         <Logger name="test.integ" level="debug" additivity="false">
             <AppenderRef ref="Console" />
         </Logger>
+        <Logger name="be.e_contract.demo" level="debug" additivity="false">
+            <AppenderRef ref="Console" />
+        </Logger>
         <Logger name="org.apache.cxf" level="debug" additivity="false">
             <AppenderRef ref="Console" />
         </Logger>

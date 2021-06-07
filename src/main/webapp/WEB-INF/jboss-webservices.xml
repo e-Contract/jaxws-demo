@@ -1,0 +1,6 @@
+<webservices xmlns="http://www.jboss.com/xml/ns/javaee" version="1.2">
+    <property>
+        <name>cxf.interceptors.in</name>
+        <value>be.e_contract.demo.ECDSAInInterceptor</value>
+    </property>
+</webservices>

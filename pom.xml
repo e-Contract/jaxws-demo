@@ -63,7 +63,7 @@
                 <configuration>
                     <archive>
                         <manifestEntries>
-                            <Dependencies>org.jboss.ws.cxf.jbossws-cxf-client,org.apache.cxf.impl annotations</Dependencies>
+                            <Dependencies>org.jboss.ws.cxf.jbossws-cxf-client,org.apache.cxf.impl,org.apache.cxf annotations</Dependencies>
                         </manifestEntries>
                     </archive>
                 </configuration>
@@ -184,6 +184,11 @@
                 <artifactId>bcpkix-jdk15on</artifactId>
                 <version>${bouncycastle.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.sun.xml.messaging.saaj</groupId>
+                <artifactId>saaj-impl</artifactId>
+                <version>2.0.1</version>
+            </dependency> 
         </dependencies>
     </dependencyManagement>
     <dependencies>
@@ -242,6 +247,11 @@
             <artifactId>bcpkix-jdk15on</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.sun.xml.messaging.saaj</groupId>
+            <artifactId>saaj-impl</artifactId>
+            <scope>test</scope>
+        </dependency> 
     </dependencies>
     <repositories>
         <repository>

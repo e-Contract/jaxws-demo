@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 @WebServiceProvider(targetNamespace = "urn:be:e-contract:jaxws-demo",
         serviceName = "ExampleService",
         wsdlLocation = "example.wsdl", portName = "ExampleServicePort")
-//@WebServlet("/example/*")
+@WebServlet("/example/*")
 @BindingType(SOAPBinding.SOAP12HTTP_BINDING)
 @EndpointProperties({
     @EndpointProperty(key = SecurityConstants.SIGNATURE_PROPERTIES, value = "demo-ws-signature.properties"),

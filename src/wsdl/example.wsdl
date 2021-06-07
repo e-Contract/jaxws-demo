@@ -65,10 +65,12 @@
                         </sp:TransportToken>
                         <sp:AlgorithmSuite>
                             <wsp:Policy>
-                                <sp:Basic128 />
-                                <sp:Basic256 />
-                                <ecsp:Basic128ECDSA xmlns:ecsp="urn:be:e-contract:security-policy"/>
-                                <ecsp:Basic256ECDSA xmlns:ecsp="urn:be:e-contract:security-policy"/>
+                                <wsp:ExactlyOne>
+                                    <sp:Basic128 />
+                                    <sp:Basic256 />
+                                    <ecsp:Basic128ECDSA xmlns:ecsp="urn:be:e-contract:security-policy"/>
+                                    <ecsp:Basic256ECDSA xmlns:ecsp="urn:be:e-contract:security-policy"/>
+                                </wsp:ExactlyOne>
                             </wsp:Policy>
                         </sp:AlgorithmSuite>
                         <sp:IncludeTimestamp />
@@ -87,6 +89,7 @@
                         </sp:SignedParts>
                     </wsp:Policy>
                 </sp:EndorsingSupportingTokens>
+                <wsaw:UsingAddressing />
                 <sp:Wss11>
                     <wsp:Policy />
                 </sp:Wss11>

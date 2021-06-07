@@ -6,6 +6,7 @@
 
     <display-name>JAX-WS Demo Web Application</display-name>
 
+<!--
     <servlet>
         <servlet-name>ws-name</servlet-name>
         <servlet-class>be.e_contract.demo.ExampleServicePortImpl</servlet-class>
@@ -14,5 +15,6 @@
         <servlet-name>ws-name</servlet-name>
         <url-pattern>/example/*</url-pattern>
     </servlet-mapping>
+-->
 
 </web-app>
