@@ -1,14 +1,16 @@
 # README for JAX-WS Demo Project
 
-This project allows for experimentations with JAX-WS within a JBoss EAP 6.4.23 application server.
+This project allows for experimentations with JAX-WS within a JBoss EAP 7.3 or WildFly 23 application server.
 
 ## Apache Configuration:
 
 Use the following apache configuration file:
 ```
 <Location "/jaxws-demo">
-    ProxyPass ajp://localhost:8009/jaxws-demo
-    ProxyPassReverse ajp://localhost:8009/jaxws-demo
+    ProxyPass http://localhost:8080/jaxws-demo
+    ProxyPassReverse http://localhost:8080/jaxws-demo
+	RequestHeader set X-Forwarded-Proto "https" 
+    ProxyPreserveHost On
 </Location>
 ```
 
@@ -26,6 +28,24 @@ Use the following logging configuration:
                 <append value="true"/>
             </periodic-rotating-file-handler>
             <logger category="be.e_contract.demo" use-parent-handlers="false">
+                <level name="DEBUG"/>
+                <handlers>
+                    <handler name="DEMO"/>
+                </handlers>
+            </logger>
+            <logger category="org.jboss.ws" use-parent-handlers="false">
+                <level name="DEBUG"/>
+                <handlers>
+                    <handler name="DEMO"/>
+                </handlers>
+            </logger>
+            <logger category="org.apache.cxf" use-parent-handlers="false">
+                <level name="DEBUG"/>
+                <handlers>
+                    <handler name="DEMO"/>
+                </handlers>
+            </logger>
+            <logger category="org.jboss.wsf" use-parent-handlers="false">
                 <level name="DEBUG"/>
                 <handlers>
                     <handler name="DEMO"/>

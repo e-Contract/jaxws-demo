@@ -60,8 +60,6 @@ public class WebServiceTest {
                 SecurityConstants.SIGNATURE_CRYPTO,
                 new ClientCrypto(privateKey, Collections
                         .singletonList(certificate)));
-        requestContext.put(SecurityConstants.CALLBACK_HANDLER,
-                new PasswordCallbackHandler());
 
         String result = port.echo("hello world");
         Assertions.assertEquals("hello world", result);
@@ -90,8 +88,6 @@ public class WebServiceTest {
                         .singletonList(certificate)));
         requestContext.put(SecurityConstants.ASYMMETRIC_SIGNATURE_ALGORITHM,
                 "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256");
-        requestContext.put(SecurityConstants.CALLBACK_HANDLER,
-                new PasswordCallbackHandler());
 
         String result = port.echo("hello world");
         Assertions.assertEquals("hello world", result);

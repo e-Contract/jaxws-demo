@@ -1,18 +1,20 @@
 package be.e_contract.demo;
 
-import java.io.StringWriter;
-import java.util.logging.Level;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import org.apache.cxf.helpers.DOMUtils;
-import org.apache.cxf.ws.security.policy.SPConstants;
-import org.apache.cxf.ws.security.policy.custom.AlgorithmSuiteLoader;
+import java.util.HashMap;
+import java.util.Map;
+import javax.xml.namespace.QName;
+import org.apache.cxf.Bus;
+import org.apache.cxf.ws.policy.AssertionBuilderRegistry;
+import org.apache.cxf.ws.policy.builder.primitive.PrimitiveAssertion;
+import org.apache.cxf.ws.policy.builder.primitive.PrimitiveAssertionBuilder;
 import org.apache.cxf.ws.security.policy.custom.DefaultAlgorithmSuiteLoader;
-import org.apache.cxf.ws.security.policy.model.AlgorithmSuite;
+import org.apache.neethi.Assertion;
+import org.apache.neethi.AssertionBuilderFactory;
+import org.apache.neethi.Policy;
+import org.apache.neethi.builders.xml.XMLPrimitiveAssertionBuilder;
+import org.apache.wss4j.policy.SPConstants;
+import org.apache.wss4j.policy.model.AlgorithmSuite;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
@@ -31,40 +33,28 @@ public class ECDSAAlgorithmSuiteLoader extends DefaultAlgorithmSuiteLoader {
         LOGGER.debug("constructor");
     }
 
-    @Override
-    public AlgorithmSuite getAlgorithmSuite(Element policyElement, SPConstants consts) {
+    public AlgorithmSuite getAlgorithmSuite(Bus bus, SPConstants.SPVersion version, Policy nestedPolicy) {
         LOGGER.debug("getAlgorithmSuite");
-        try {
-            LOGGER.debug("policyElement: {}", toString(policyElement));
-        } catch (TransformerException ex) {
-            LOGGER.error("toString error: " + ex.getMessage(), ex);
-        }
-        AlgorithmSuite algorithmSuite = super.getAlgorithmSuite(policyElement, consts);
-        if (null != algorithmSuite) {
-            return algorithmSuite;
-        }
-        if (policyElement != null) {
-            Element algorithm = DOMUtils.getFirstElement(policyElement);
-            if (algorithm != null) {
-                if (ECDSA_NAMESPACE.equals(algorithm.getNamespaceURI())) {
-                    algorithmSuite = new ECDSAAlgorithmSuite();
-                    return algorithmSuite;
+        AssertionBuilderRegistry reg = bus.getExtension(AssertionBuilderRegistry.class);
+        if (reg != null) {
+            LOGGER.debug("register");
+            final Map<QName, Assertion> assertions = new HashMap<>();
+            QName qName = new QName(ECDSA_NAMESPACE, ECDSA_ALGORITHM_SUITE_TYPE);
+            assertions.put(qName, new PrimitiveAssertion(qName));
+            qName = new QName(ECDSA_NAMESPACE, ECDSA_ALGORITHM_SUITE_TYPE_256);
+            assertions.put(qName, new PrimitiveAssertion(qName));
+
+            reg.registerBuilder(new PrimitiveAssertionBuilder(assertions.keySet()) {
+                public Assertion build(Element element, AssertionBuilderFactory fact) {
+                    if (XMLPrimitiveAssertionBuilder.isOptional(element)
+                            || XMLPrimitiveAssertionBuilder.isIgnorable(element)) {
+                        return super.build(element, fact);
+                    }
+                    QName q = new QName(element.getNamespaceURI(), element.getLocalName());
+                    return assertions.get(q);
                 }
-            }
+            });
         }
-        return null;
-    }
-
-    private String toString(Element element) throws TransformerConfigurationException, TransformerException {
-        TransformerFactory transformerFactory = TransformerFactory
-                .newInstance();
-        Transformer transformer = transformerFactory.newTransformer();
-        DOMSource source = new DOMSource(element);
-        StreamResult result = new StreamResult(new StringWriter());
-
-        transformer.transform(source, result);
-
-        String strObject = result.getWriter().toString();
-        return strObject;
+        return new ECDSAAlgorithmSuite(version, nestedPolicy);
     }
 }

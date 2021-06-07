@@ -35,9 +35,9 @@
                     <version>3.3.1</version>
                 </plugin>
                 <plugin>
-                    <groupId>org.jboss.as.plugins</groupId>
-                    <artifactId>jboss-as-maven-plugin</artifactId>
-                    <version>7.9.Final</version>
+                    <groupId>org.wildfly.plugins</groupId>
+                    <artifactId>wildfly-maven-plugin</artifactId>
+                    <version>2.0.2.Final</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -120,7 +120,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <slf4j.version>1.7.30</slf4j.version>
-        <cxf.version>2.7.16</cxf.version>
+        <cxf.version>3.3.10</cxf.version>
         <bouncycastle.version>1.68</bouncycastle.version>
     </properties>
     <scm>
@@ -136,8 +136,8 @@
             </dependency>
             <dependency>
                 <groupId>org.jboss.spec</groupId>
-                <artifactId>jboss-javaee-all-6.0</artifactId>
-                <version>3.0.3.Final</version>
+                <artifactId>jboss-javaee-all-8.0</artifactId>
+                <version>1.0.4.Final</version>
             </dependency>
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
@@ -151,7 +151,12 @@
             </dependency>
             <dependency>
                 <groupId>org.apache.cxf</groupId>
-                <artifactId>cxf-api</artifactId>
+                <artifactId>cxf-core</artifactId>
+                <version>${cxf.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-rt-ws-policy</artifactId>
                 <version>${cxf.version}</version>
             </dependency>
             <dependency>
@@ -162,11 +167,6 @@
             <dependency>
                 <groupId>org.apache.cxf</groupId>
                 <artifactId>cxf-rt-frontend-jaxws</artifactId>
-                <version>${cxf.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.cxf</groupId>
-                <artifactId>cxf-rt-ws-policy</artifactId>
                 <version>${cxf.version}</version>
             </dependency>
             <dependency>
@@ -184,17 +184,12 @@
                 <artifactId>bcpkix-jdk15on</artifactId>
                 <version>${bouncycastle.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.apache.neethi</groupId>
-                <artifactId>neethi</artifactId>
-                <version>3.0.3</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
     <dependencies>
         <dependency>
             <groupId>org.jboss.spec</groupId>
-            <artifactId>jboss-javaee-all-6.0</artifactId>
+            <artifactId>jboss-javaee-all-8.0</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -204,7 +199,7 @@
         </dependency>
         <dependency>
             <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-api</artifactId>
+            <artifactId>cxf-core</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -213,8 +208,8 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.apache.neethi</groupId>
-            <artifactId>neethi</artifactId>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-ws-policy</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -230,11 +225,6 @@
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-frontend-jaxws</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-ws-policy</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
