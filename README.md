@@ -7,6 +7,14 @@ This project allows for experimentations with JAX-WS within a JBoss EAP 7.3 or W
 Use the following apache configuration file:
 ```
 <Location "/jaxws-demo">
+    ProxyPass ajp://localhost:8009/jaxws-demo
+    ProxyPassReverse ajp://localhost:8009/jaxws-demo
+</Location>
+```
+
+We tried the following over HTTP, but then we receive a WS-Policy verification error (TransportBinding: TLS is not enabled).
+```
+<Location "/jaxws-demo">
     ProxyPass http://localhost:8080/jaxws-demo
     ProxyPassReverse http://localhost:8080/jaxws-demo
 	RequestHeader set X-Forwarded-Proto "https" 
@@ -15,6 +23,11 @@ Use the following apache configuration file:
 ```
 
 ## JBoss Configuration
+
+Use the following undertow AJP connector configuration:
+```xml
+<ajp-listener name="ajp" socket-binding="ajp"/>
+```
 
 Use the following logging configuration:
 ```xml

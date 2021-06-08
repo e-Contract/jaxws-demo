@@ -1,7 +1,0 @@
-<jboss-deployment-structure>
-    <deployment>
-        <dependencies>
-            <module name="org.springframework.spring" export="true" meta-inf="export"/>
-        </dependencies>
-    </deployment>
-</jboss-deployment-structure>

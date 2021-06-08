@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jaxws-config xmlns="urn:jboss:jbossws-jaxws-config:4.0"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xmlns:javaee="http://java.sun.com/xml/ns/javaee"
+              xsi:schemaLocation="urn:jboss:jbossws-jaxws-config:4.0 https://raw.githubusercontent.com/wildfly/wildfly/master/webservices/server-integration/src/main/resources/schema/jbossws-jaxws-config_4_0.xsd">
+    <endpoint-config>
+        <config-name>ECDSAConfig</config-name>
+        <property>
+            <property-name>cxf.interceptors.in</property-name>
+            <property-value>be.e_contract.demo.ECDSAInInterceptor</property-value>
+        </property>
+        <property>
+            <property-name>cxf.features</property-name>
+            <property-value>##ECDSAAlgorithmSuiteFeature</property-value>
+        </property>
+        <property>
+            <property-name>##ECDSAAlgorithmSuiteFeature</property-name>
+            <property-value>be.e_contract.demo.ECDSAAlgorithmSuiteFeature</property-value>
+        </property>
+    </endpoint-config>
+</jaxws-config>
