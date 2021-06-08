@@ -2,6 +2,8 @@
 
 This project allows for experimentations with JAX-WS within a JBoss EAP 7.3 or WildFly 23 application server.
 
+We demonstrate adding support for ECDSA as the WS-Policy level.
+
 ## Apache Configuration:
 
 Use the following apache configuration file:
@@ -66,7 +68,10 @@ Use the following logging configuration:
             </logger>
 ```
 
-## References
+## Deploy the demo web application
 
-http://www.mastertheboss.com/javaee/jboss-web-services/using-spring-cxf-descriptors-in-wildfly
-https://access.redhat.com/solutions/168093
+Deploy on a local running WildFly application server via:
+```
+mvn clean install wildfly:deploy
+```
+

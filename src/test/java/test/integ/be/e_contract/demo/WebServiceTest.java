@@ -39,6 +39,7 @@ import org.bouncycastle.operator.bc.BcECContentSignerBuilder;
 import org.bouncycastle.operator.bc.BcRSAContentSignerBuilder;
 import org.joda.time.DateTime;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,14 +48,17 @@ public class WebServiceTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebServiceTest.class);
 
-    @Test
-    public void invokeWebService() throws Exception {
-        LOGGER.debug("test");
-
+    @BeforeAll
+    public static void beforeAll() {
         Bus bus = BusFactory.getDefaultBus();
         bus.setExtension(new ECDSAAlgorithmSuiteLoader(), AlgorithmSuiteLoader.class);
         BusFactory.setDefaultBus(bus);
         BusFactory.setThreadDefaultBus(bus);
+    }
+
+    @Test
+    public void invokeWebService() throws Exception {
+        LOGGER.debug("test");
 
         ExampleService service = new ExampleService();
         ExampleServicePortType port = service.getExampleServicePort(new AddressingFeature(true));
@@ -81,11 +85,6 @@ public class WebServiceTest {
     @Test
     public void invokeWebServiceECDSA() throws Exception {
         LOGGER.debug("test");
-
-        Bus bus = BusFactory.getDefaultBus();
-        bus.setExtension(new ECDSAAlgorithmSuiteLoader(), AlgorithmSuiteLoader.class);
-        BusFactory.setDefaultBus(bus);
-        BusFactory.setThreadDefaultBus(bus);
 
         ExampleService service = new ExampleService();
         ExampleServicePortType port = service.getExampleServicePort(new AddressingFeature(true));
