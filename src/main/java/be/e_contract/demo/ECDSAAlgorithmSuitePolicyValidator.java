@@ -159,16 +159,12 @@ public class ECDSAAlgorithmSuitePolicyValidator extends AbstractSecurityPolicyVa
         AlgorithmSuiteType algorithmSuiteType = algorithmPolicy.getAlgorithmSuiteType();
         for (WSDataRef dataRef : dataRefs) {
             String digestMethod = dataRef.getDigestAlgorithm();
-            LOGGER.debug("algorithm suite type: {}", algorithmSuiteType);
-            if (null != algorithmSuiteType) {
-                if (!algorithmSuiteType.getDigest().equals(digestMethod)) {
-                    ai.setNotAsserted(
-                            "The digest method does not match the requirement"
-                    );
-                    return false;
-                }
-            } else {
-                LOGGER.warn("AlgorithmSuiteType was null");
+
+            if (!algorithmSuiteType.getDigest().equals(digestMethod)) {
+                ai.setNotAsserted(
+                        "The digest method does not match the requirement"
+                );
+                return false;
             }
 
             List<String> transformAlgorithms = dataRef.getTransformAlgorithms();
@@ -291,11 +287,6 @@ public class ECDSAAlgorithmSuitePolicyValidator extends AbstractSecurityPolicyVa
     ) {
         LOGGER.debug("checkPublicKeyLength");
         AlgorithmSuiteType algorithmSuiteType = algorithmPolicy.getAlgorithmSuiteType();
-        LOGGER.debug("algorithmSuiteType: {}", algorithmSuiteType);
-        if (null == algorithmSuiteType) {
-            LOGGER.warn("AlgorithmSuiteType was null");
-            return true;
-        }
         if (publicKey instanceof RSAPublicKey) {
             int modulus = ((RSAPublicKey) publicKey).getModulus().bitLength();
             if (modulus < algorithmSuiteType.getMinimumAsymmetricKeyLength()
@@ -334,5 +325,4 @@ public class ECDSAAlgorithmSuitePolicyValidator extends AbstractSecurityPolicyVa
 
         return true;
     }
-
 }

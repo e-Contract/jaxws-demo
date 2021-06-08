@@ -1,6 +1,7 @@
 package test.integ.be.e_contract.demo;
 
 import be.e_contract.demo.ECDSAAlgorithmSuiteLoader;
+import be.e_contract.demo.ECDSAInInterceptor;
 import be.e_contract.jaxws_demo.ExampleService;
 import be.e_contract.jaxws_demo.ExampleServicePortType;
 import java.io.ByteArrayInputStream;
@@ -17,8 +18,11 @@ import java.security.spec.RSAKeyGenParameterSpec;
 import java.util.Collections;
 import java.util.Map;
 import javax.xml.ws.BindingProvider;
+import javax.xml.ws.soap.AddressingFeature;
 import org.apache.cxf.Bus;
 import org.apache.cxf.BusFactory;
+import org.apache.cxf.endpoint.Client;
+import org.apache.cxf.frontend.ClientProxy;
 import org.apache.cxf.ws.security.SecurityConstants;
 import org.apache.cxf.ws.security.policy.custom.AlgorithmSuiteLoader;
 import org.bouncycastle.asn1.x500.X500Name;
@@ -53,7 +57,7 @@ public class WebServiceTest {
         BusFactory.setThreadDefaultBus(bus);
 
         ExampleService service = new ExampleService();
-        ExampleServicePortType port = service.getExampleServicePort();
+        ExampleServicePortType port = service.getExampleServicePort(new AddressingFeature(true));
 
         KeyPair keyPair = generateKeyPair();
         PrivateKey privateKey = keyPair.getPrivate();
@@ -78,8 +82,16 @@ public class WebServiceTest {
     public void invokeWebServiceECDSA() throws Exception {
         LOGGER.debug("test");
 
+        Bus bus = BusFactory.getDefaultBus();
+        bus.setExtension(new ECDSAAlgorithmSuiteLoader(), AlgorithmSuiteLoader.class);
+        BusFactory.setDefaultBus(bus);
+        BusFactory.setThreadDefaultBus(bus);
+
         ExampleService service = new ExampleService();
-        ExampleServicePortType port = service.getExampleServicePort();
+        ExampleServicePortType port = service.getExampleServicePort(new AddressingFeature(true));
+
+        Client client = ClientProxy.getClient(port);
+        client.getInInterceptors().add(new ECDSAInInterceptor());
 
         KeyPair keyPair = generateKeyPair("EC");
         PrivateKey privateKey = keyPair.getPrivate();
@@ -133,10 +145,10 @@ public class WebServiceTest {
         String signatureAlgo;
         switch (privateKey.getAlgorithm()) {
             case "RSA":
-                signatureAlgo = "SHA1withRSA";
+                signatureAlgo = "SHA256withRSA";
                 break;
             case "EC":
-                signatureAlgo = "SHA1withECDSA";
+                signatureAlgo = "SHA256withECDSA";
                 break;
             default:
                 throw new IllegalArgumentException("unsupported key algo: " + privateKey.getAlgorithm());
