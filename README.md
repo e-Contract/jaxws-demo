@@ -1,8 +1,24 @@
-# README for JAX-WS Demo Project
+# JAX-WS Demo Project
 
 This project allows for experimentations with JAX-WS within a JBoss EAP 7.3 or WildFly 23 application server.
 
 We demonstrate adding support for ECDSA as the WS-Policy level.
+
+This project implements the following WS-SecurityPolicy:
+```xml
+<sp:AlgorithmSuite>
+    <wsp:Policy>
+        <wsp:ExactlyOne>
+            <sp:Basic128 />
+            <sp:Basic256 />
+            <ecsp:Basic128ECDSA xmlns:ecsp="urn:be:e-contract:security-policy"/>
+            <ecsp:Basic256ECDSA xmlns:ecsp="urn:be:e-contract:security-policy"/>
+        </wsp:ExactlyOne>
+    </wsp:Policy>
+</sp:AlgorithmSuite>
+```
+allowing the usage of ECDSA signatures for WS-Security based authentication.
+
 
 ## Apache Configuration:
 
@@ -74,4 +90,6 @@ Deploy on a local running WildFly application server via:
 ```
 mvn clean install wildfly:deploy
 ```
+
+You can run the integration tests using the `integration-tests` Maven profile.
 
